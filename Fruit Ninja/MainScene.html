@@ -25,5 +25,21 @@
 <script type="text/javascript">
     var scene, renderer, camera;
 
+
+
+
+    function init() {
+        // renderer initialization
+        {
+            renderer = new THREE.WebGLRenderer({
+                antialias: true
+            });
+            renderer.setClearColor(new THREE.Color(0xcccccc));
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        }
+    }
 </script>
 </html>
