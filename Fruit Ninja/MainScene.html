@@ -24,11 +24,30 @@
 </body>
 <script type="text/javascript">
     var scene, renderer, camera;
+    var backGround;
+    var active_texture;
 
+    var dragon_texture,
+        wood_texture,
+        bambo_texture,
+        brick_texture,
+        cracked_texture,
+        egypt_texture;
+
+    // assigning textures variables
+    {
+        dragon_texture = new THREE.TextureLoader().load("resources/DragonYingYung.png");
+        wood_texture = new THREE.TextureLoader().load("resources/Wood.png");
+        bambo_texture = new THREE.TextureLoader().load("resources/Bamboo.jpg");
+        brick_texture = new THREE.TextureLoader().load("resources/Brick.jpg");
+        cracked_texture = new THREE.TextureLoader().load("resources/Cracked.jpg");
+        egypt_texture = new THREE.TextureLoader().load("resources/Hieroglyphics.jpg");
+    }
 
 
     init();
     animate();
+    createPanel();
     function init() {
         // renderer initialization
         {
@@ -51,11 +70,104 @@
             camera.position.set(1, 20, 70);
             camera.lookAt(scene.position);
         }
+
+        // lights
+        {
+            // a white and smooth ambient color
+            var ambiColor = "#ffffff";
+            let ambientLight = new THREE.AmbientLight(ambiColor, 0.5);
+            scene.add(ambientLight);
+
+
+            // main light in the scene which can cast shadow
+            let spotLight = new THREE.SpotLight(0xffffff, 1, 1000, 1, 0.5, 0.5);
+            spotLight.position.set(0, 3, 50);
+            spotLight.castShadow = true;
+            spotLight.shadow.camera.near = 8;
+            spotLight.shadow.camera.far = 30;
+            spotLight.shadow.mapSize.width = 1024;
+            spotLight.shadow.mapSize.height = 1024
+            scene.add(spotLight);
+
+        }
+
+        // backGround
+        {
+            // plane geometry which has the rule of backGround
+            backGround = getSurface(1850, 885);
+            backGround.rotateX(49.99);
+            backGround.rotateY(0.01);
+            backGround.position.z = -350;
+            backGround.position.x = -16;
+            backGround.position.y = -105;
+            backGround.receiveShadow = true;
+            scene.add(backGround);
+
+        }
+
     }
 
     function animate() {
         renderer.render(scene, camera);
         requestAnimationFrame(animate);
+
+        // storing the current backGround Texture
+        active_texture = backGround.material.map;
+    }
+
+    function getSurface(width, height)
+    {
+        let geometry = new THREE.PlaneGeometry(width, height);
+        let material = new THREE.MeshPhongMaterial({
+            map: dragon_texture,
+            //color: 0x3dff00,
+            side: THREE.DoubleSide
+        });
+        //material = new THREE.MeshBasicMaterial(0xff00cc);
+        let mesh = new THREE.Mesh(geometry, material);
+        return mesh;
+    }
+
+    function changeBackGround(BG)
+    {
+        if (BG == 'Ying Yung'){
+            active_texture.dispose();
+            backGround.material.map = dragon_texture;
+        }
+        else if (BG == 'Wood'){
+            active_texture.dispose();
+            backGround.material.map = wood_texture;
+        }
+        else if (BG == 'Brick'){
+            active_texture.dispose();
+            backGround.material.map = brick_texture;
+        }
+        else if (BG == 'Bamboo'){
+            active_texture.dispose();
+            backGround.material.map = bambo_texture;
+        }
+        else if (BG == 'Cracked'){
+            active_texture.dispose();
+            backGround.material.map = cracked_texture;
+        }
+        else if (BG == 'Egyptian'){
+            active_texture.dispose();
+            backGround.material.map = egypt_texture;
+        }
+    }
+
+    function createPanel()
+    {
+        var gui = new dat.GUI();
+
+        parameters = {
+            BG: "Ying Yung"
+        }
+
+        gui.add(parameters, 'BG', ["Ying Yung","Bamboo","Egyptian","Wood", "Brick", "Cracked"]).name('backGround').onChange(function () {
+            changeBackGround(parameters.BG);
+        });
+        gui.open();
     }
 </script>
 </html>
