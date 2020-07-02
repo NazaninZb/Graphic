@@ -144,6 +144,9 @@
     }
 
     function animate() {
+        // getting the current time
+        let t = Date.now();
+
         renderer.render(scene, camera);
         requestAnimationFrame(animate);
 
