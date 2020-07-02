@@ -27,6 +27,9 @@
     var backGround;
     var active_texture;
 
+    //light variables
+    var pointLight1, pointLight2, pointLight3, pointLight4;
+
     var dragon_texture,
         wood_texture,
         bambo_texture,
@@ -95,6 +98,37 @@
             spotLight.shadow.mapSize.height = 1024;
             scene.add(spotLight);
 
+
+            pointLight1 = new THREE.PointLight(0xffffff);
+            pointLight1.position.set(-14.867, 6.555, 7.006);
+            pointLight1.distance = 10;
+            pointLight1.intensity = 1;
+            pointLight1.castShadow = true;
+            scene.add(pointLight1);
+
+            pointLight2 = new THREE.PointLight(0xffffff);
+            pointLight2.position.set(-14.867, -6.555, 7.006);
+            pointLight2.distance = 10;
+            pointLight2.intensity = 1;
+            pointLight2.castShadow = true;
+            scene.add(pointLight2);
+
+            pointLight3 = new THREE.PointLight(0xffffff);
+            pointLight3.position.set(14.867, -6.555, 7.006);
+            pointLight3.distance = 10;
+            pointLight3.intensity = 1;
+            pointLight3.castShadow = true;
+            scene.add(pointLight3);
+
+            pointLight4 = new THREE.PointLight(0xffffff);
+            pointLight4.position.set(14.867, 6.555, 7.006);
+            pointLight4.distance = 10;
+            pointLight4.intensity = 1;
+            pointLight4.castShadow = true;
+            scene.add(pointLight4);
+
+
+
         }
 
         // backGround
@@ -116,6 +150,12 @@
 
         // storing the current backGround Texture
         active_texture = backGround.material.map;
+
+        // optional : light dance
+        pointLight1.intensity = Math.sin(t / 500) * 2;
+        pointLight2.intensity = Math.sin(t / 500) * 2;
+        pointLight3.intensity = Math.sin(t / 500) * 2;
+        pointLight4.intensity = Math.sin(t / 500) * 2;
     }
 
     function getSurface(width, height)
