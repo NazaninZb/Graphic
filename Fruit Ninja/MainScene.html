@@ -28,6 +28,9 @@
     //light variables
     var pointLight1, pointLight2, pointLight3, pointLight4;
 
+    // score variables
+    var textGeometry, textMaterial, textFont, scoreText, score = 0, text = "press space to start";
+
     var objects = [];
 
     var dragon_texture,
@@ -61,9 +64,9 @@
     }
 
 
+    createPanel();
     init();
     animate();
-    createPanel();
     function init() {
         // renderer initialization
         {
@@ -206,6 +209,28 @@
                 objects.push(appleMesh);
             });
 
+            var fontLoader = new THREE.FontLoader();
+            fontLoader.load('resources/fonts/helvetiker_bold.typeface.json', function (font) {
+                textFont = font;
+                textGeometry = new THREE.TextGeometry(text, {
+                    font: font,
+                    size: 0.5,
+                    height: 0.3,
+                    curveSegments: 10,
+                    bevelEnabled: false
+                });
+
+                THREE.GeometryUtils.center(textGeometry);
+                textMaterial = new THREE.MeshStandardMaterial({color: 0x00ffff});
+
+                scoreText = new THREE.Mesh(textGeometry, textMaterial);
+                scoreText.rotation.y = Math.PI;
+                scoreText.castShadow = true;
+                scoreText.position.x = 0;
+                scoreText.position.y = 3;
+                scene.add(scoreText);
+            });
+
         }
 
     }
@@ -216,6 +241,9 @@
 
         renderer.render(scene, camera);
         requestAnimationFrame(animate);
+
+        // rotating score
+        scoreText.rotation.y += 0.01;
 
         // storing the current backGround Texture
         active_texture = backGround.material.map;
