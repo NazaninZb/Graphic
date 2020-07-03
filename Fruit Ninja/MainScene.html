@@ -23,7 +23,7 @@
 <div id="WebGl-output"></div>
 </body>
 <script type="text/javascript">
-    var scene, renderer, camera, world;
+    var scene, renderer, camera, world,createInterval;
     var active_texture;
 
     //light variables
@@ -35,6 +35,15 @@
     var mainSound, loseSound, hitSound, bombHitSound, currentSound;
     var audioLoader = new THREE.AudioLoader();
     var listener = new THREE.AudioListener();
+
+    // class for both physical and visual 3D objects
+    class physicalObject {
+        constructor(object, body) {
+            this.object = object;
+            this.body = body;
+        }
+    }
+    var physicalObjects = [];
 
     // score variables
     var textGeometry, textMaterial, textFont, scoreText, score = 0, text = "press space to start";
@@ -359,8 +368,26 @@
             scoreText.position.x = 0;
             scoreText.position.y = 3;
             scene.add(scoreText);
-            spawnInterval = window.setInterval(spawner, 2000);
+            createInterval = window.setInterval(creator, 2000);
         }
+    }
+
+    // utility method to create an instance of our objects and assigning them physics
+    function creator() {
+        var x, y, z;
+        x = getRndInteger(-9, 9);
+        y = 17;
+        z = getRndInteger(2, 6);
+
+        var clone = objects[getRndInteger(0, objects.length)].clone();
+        var phObject = new physicalObject(clone, new CANNON.Body({ mass: 1, shape: new CANNON.Box(new CANNON.Vec3(1, 1, 1))}));
+
+        phObject.body.position.set(x, y, z);
+        clone.position.copy(phObject.body.position);
+        scene.add(phObject.object);
+        world.add(phObject.body);
+        physicalObjects.push(phObject);
+        models.push(phObject.object);
     }
 
     // a function for handling windows resize event
