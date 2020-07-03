@@ -259,6 +259,11 @@
 
         }
 
+        // events
+        {
+            window.addEventListener('resize', onWindowResize, false);
+        }
+
     }
 
     function animate() {
@@ -279,6 +284,19 @@
         pointLight2.intensity = Math.sin(t / 500) * 2;
         pointLight3.intensity = Math.sin(t / 500) * 2;
         pointLight4.intensity = Math.sin(t / 500) * 2;
+    }
+
+    // a function for handling windows resize event
+    function onWindowResize(event) {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize( window.innerWidth, window.innerHeight );
+    }
+
+    // utility function to get a random integer that include min and exclude max
+    function getRndInteger(min, max) {
+        return Math.floor(Math.random() * (max - min) ) + min;
     }
 
     function getSurface(width, height)
