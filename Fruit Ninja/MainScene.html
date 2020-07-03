@@ -28,6 +28,8 @@
     //light variables
     var pointLight1, pointLight2, pointLight3, pointLight4;
 
+    var models = [], objects = [], lives = [];
+
     // score variables
     var textGeometry, textMaterial, textFont, scoreText, score = 0, text = "press space to start";
 
@@ -230,6 +232,30 @@
                 scoreText.position.y = 3;
                 scene.add(scoreText);
             });
+
+            var x = 0, y = 0;
+            var heartShape = new THREE.Shape(); // From http://blog.burlock.org/html5/130-paths
+            heartShape.moveTo( x + 25, y + 25 )
+            heartShape.bezierCurveTo( x + 25, y + 25, x + 20, y, x, y )
+            heartShape.bezierCurveTo( x - 30, y, x - 30, y + 35, x - 30, y + 35 )
+            heartShape.bezierCurveTo( x - 30, y + 55, x - 10, y + 77, x + 25, y + 95 )
+            heartShape.bezierCurveTo( x + 60, y + 77, x + 80, y + 55, x + 80, y + 35 )
+            heartShape.bezierCurveTo( x + 80, y + 35, x + 80, y, x + 50, y )
+            heartShape.bezierCurveTo( x + 35, y, x + 25, y + 25, x + 25, y + 25 );
+            var geometry = new THREE.ShapeBufferGeometry( heartShape);
+            var heartMesh = new THREE.Mesh( geometry, new THREE.MeshPhongMaterial( { color: 0xff0000, side: THREE.DoubleSide } ) );
+            heartMesh.scale.set(0.01, 0.01, 0.01);
+            heartMesh.position.set(12, 6, 6.5);
+            heartMesh.rotation.x = Math.PI;
+            lives.push(heartMesh.clone());
+            lives[0].position.set(9, 6, 6.5);
+            lives.push(heartMesh.clone());
+            lives[1].position.set(10.5, 6, 6.5);
+            lives.push(heartMesh.clone());
+
+            for (var i = 0; i < lives.length; i++){
+                scene.add(lives[i]);
+            }
 
         }
 
