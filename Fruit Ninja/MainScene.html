@@ -23,11 +23,12 @@
 </body>
 <script type="text/javascript">
     var scene, renderer, camera;
-    var backGround;
     var active_texture;
 
     //light variables
     var pointLight1, pointLight2, pointLight3, pointLight4;
+
+    var objects = [];
 
     var dragon_texture,
         wood_texture,
@@ -44,6 +45,19 @@
         brick_texture = new THREE.TextureLoader().load("resources/Brick.jpg");
         cracked_texture = new THREE.TextureLoader().load("resources/Cracked.jpg");
         egypt_texture = new THREE.TextureLoader().load("resources/Hieroglyphics.jpg");
+    }
+
+    // 3D objects and models declaration
+    {
+        var backGround;
+        var skull = new THREE.Mesh();
+        var apple = new THREE.Mesh();
+        var appleMesh = new THREE.Mesh();
+        var banana = new THREE.Mesh();
+        var bananaMesh = new THREE.Mesh();
+        var pineApple = new THREE.Mesh();
+        var pineAppleMesh = new THREE.Mesh();
+        var waterMelon = new THREE.Mesh();
     }
 
 
@@ -141,6 +155,25 @@
 
         }
 
+        // 3D objects and models
+        {
+            waterMelon = getSphere(1, 32, 32, 0, 6.3, 0, 3.1);
+            waterMelon.castShadow = true;
+            waterMelon.position.z = 6;
+            waterMelon.name = "waterMelon";
+            waterMelon.material.map = new THREE.TextureLoader().load('resources/water melon texture/food_0001_base_color_4k.jpg');
+            objects.push(waterMelon);
+
+
+            skull = getSphere(0.5, 32, 32, 0, 6.3, 0, 3.1);
+            skull.castShadow = true;
+            skull.position.z = 6;
+            skull.position.x = -5;
+            skull.material.map = new THREE.TextureLoader().load('resources/skull.jpg');
+            skull.name = "bomb";
+            objects.push(skull);
+        }
+
     }
 
     function animate() {
@@ -200,6 +233,19 @@
             active_texture.dispose();
             backGround.material.map = egypt_texture;
         }
+    }
+
+    // this function gives us a sphere
+    function getSphere(radius, withSegment, heightSegment, phiStart, phiLength, thetaStart, thetaLength) {
+        let geomatry = new THREE.SphereGeometry(radius, withSegment, heightSegment, phiStart, phiLength, thetaStart, thetaLength);
+
+        let material = new THREE.MeshStandardMaterial({
+            color: 0xffffff
+        });
+        let sphere = new THREE.Mesh(geomatry, material, 1);
+
+        return sphere;
+
     }
 
     function createPanel()
