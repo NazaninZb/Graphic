@@ -172,6 +172,40 @@
             skull.material.map = new THREE.TextureLoader().load('resources/skull.jpg');
             skull.name = "bomb";
             objects.push(skull);
+
+            const loader1 = new THREE.GLTFLoader();
+            loader1.load('resources/models/Banana/scene.gltf', function (gltf) {
+                banana = gltf.scene;
+                bananaMesh = banana.children[0].children[0].children[0].children[0].children[0].children[0];
+                bananaMesh.name = "banana";
+                bananaMesh.castShadow = true;
+                bananaMesh.receiveShadow = true;
+                bananaMesh.scale.set(0.04, 0.04, 0.04);
+                objects.push(bananaMesh);
+            });
+
+            const loader5 = new THREE.GLTFLoader();
+            loader5.load('resources/models/Pineapple/scene.gltf', function (gltf) {
+                pineApple = gltf.scene;
+                pineAppleMesh = pineApple.children[0].children[0].children[0].children[0].children[0].children[0];
+                pineAppleMesh.name = "pineapple";
+                pineAppleMesh.castShadow = true;
+                pineAppleMesh.receiveShadow = true;
+                pineAppleMesh.scale.set(0.5, 0.5, 0.5);
+                objects.push(pineAppleMesh);
+            });
+
+            const loader = new THREE.GLTFLoader();
+            loader.load('resources/models/Apple/scene.gltf', function (gltf) {
+                apple = gltf.scene;
+                appleMesh = apple.children[0].children[0].children[0].children[0];
+                appleMesh.castShadow = true;
+                appleMesh.receiveShadow = true;
+                appleMesh.name = "apple";
+                appleMesh.scale.set(0.2, 0.2, 0.2);
+                objects.push(appleMesh);
+            });
+
         }
 
     }
