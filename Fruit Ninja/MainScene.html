@@ -31,6 +31,11 @@
 
     var models = [], objects = [], lives = [];
 
+    // sounds variable
+    var mainSound, loseSound, hitSound, bombHitSound, currentSound;
+    var audioLoader = new THREE.AudioLoader();
+    var listener = new THREE.AudioListener();
+
     // score variables
     var textGeometry, textMaterial, textFont, scoreText, score = 0, text = "press space to start";
 
@@ -94,6 +99,8 @@
 
         // assign scene
         scene = new THREE.Scene();
+        scene.add(listener);
+
 
         // camera setting
         {
@@ -266,6 +273,39 @@
             for (var i = 0; i < lives.length; i++){
                 scene.add(lives[i]);
             }
+
+        }
+
+        // sounds
+        {
+            mainSound = new THREE.PositionalAudio(listener);
+            audioLoader.load('resources/sounds/Fighters Destiny - Ninja Room.mp3', function (buffer) {
+                mainSound.setBuffer(buffer);
+                mainSound.setRefDistance(15);
+                mainSound.loop = true;
+                currentSound = mainSound;
+            });
+
+            loseSound = new THREE.PositionalAudio(listener);
+            audioLoader.load('resources/sounds/Game-over.wav', function (buffer) {
+                loseSound.setBuffer(buffer);
+                loseSound.setRefDistance(15);
+                loseSound.loop = false;
+            });
+
+            hitSound = new THREE.PositionalAudio(listener);
+            audioLoader.load('resources/sounds/pome-slice-3.wav', function (buffer) {
+                hitSound.setBuffer(buffer);
+                hitSound.setRefDistance(15);
+                hitSound.loop = false;
+            });
+
+            bombHitSound = new THREE.PositionalAudio(listener);
+            audioLoader.load('resources/sounds/menu-bomb.wav', function (buffer) {
+                bombHitSound.setBuffer(buffer);
+                bombHitSound.setRefDistance(15);
+                bombHitSound.loop = false;
+            });
 
         }
 
