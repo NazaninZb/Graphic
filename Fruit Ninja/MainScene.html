@@ -337,6 +337,12 @@
         // rotating score
         scoreText.rotation.y += 0.01;
 
+        world.step(1 / 60);
+        physicalObjects.forEach(function (value, index, array) {
+            value.object.position.copy(value.body.position);
+            value.object.quaternion.copy(value.body.quaternion);
+        });
+
         // storing the current backGround Texture
         active_texture = backGround.material.map;
 
